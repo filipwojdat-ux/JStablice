@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Zadania JS - Tablice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 10px;
+        }
+        h1 { 
+            color: #000080; 
+        }
+        h2 { 
+            font-size: 18px; 
+            margin-bottom: 5px;
+        }
+        .zadanie {
+            background-color: #f0f0f0;
+            border: 1px solid #000000;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        pre {
+            background-color: #e0e0e0;
+            border: 1px dotted #333333;
+            padding: 5px;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>JavaScript Tablice</h1>
+    <div id="wyniki"></div>
+
+    <script>
+        const pojemnik = document.getElementById('wyniki');
+        function wypisz(zadanie, tresc) {
+            pojemnik.innerHTML += `
+                <div class="zadanie">
+                    <h2>${zadanie}</h2>
+                    <pre>${tresc}</pre>
+                </div>
+            `;
+        }
+
+        // ZADANIE 1
+        let tab1 = [7, 3, 1, 6, 9, 5, 4, 10, 2, 2];
+        let komorka5 = tab1[4]; 
+        tab1[6] = 12; 
+
+        let tab2 = [...tab1]; 
+        
+        let tab3 = [];
+        for(let i = 0; i < tab1.length; i++) {
+            tab3.push(tab1[i] + tab2[i]);
+        }
+
+        tab2 = [...tab1].reverse(); 
+
+        wypisz("Zadanie 1", 
+            "Zawartość 5 komórki: " + komorka5 + "\n" +
+            "Tab1 po zmianie: " + tab1.join(', ') + "\n" +
+            "Tab3 (suma tab1 i tab2): " + tab3.join(', ') + "\n" +
+            "Tab2 (odwrócone tab1): " + tab2.join(', ')
+        );
+
+        // ZADANIE 2
+        let inputZad2 = prompt("Zadanie 2\nPodaj liczby oddzielone przecinkiem (np. 4,3,8,3,10,1,3,6):");
+        if (!inputZad2) inputZad2 = "4,3,8,3,10,1,3,6"; 
+        
+        let arr2 = inputZad2.split(',').map(Number);
+        
+        let min2 = Math.min(...arr2);
+        let max2 = Math.max(...arr2);
+        let suma2 = arr2.reduce((a, b) => a + b, 0);
+        let srednia2 = suma2 / arr2.length;
+        let ilosc3 = arr2.filter(x => x === 3).length;
+        
+        arr2.sort((a, b) => a - b); 
+        
+        let srodek = Math.floor(arr2.length / 2);
+        let mediana = arr2.length % 2 !== 0 ? arr2[srodek] : (arr2[srodek - 1] + arr2[srodek]) / 2;
+        
+        let min3 = arr2.slice(0, 3);
+        let max3 = arr2.slice(-3);
+        
+        let kwadraty = arr2.map(x => x ** 2);
+        let parzyste = arr2.filter(x => x % 2 === 0).length;
+        let nieparzyste = arr2.length - parzyste;
+        let podzielnePrzez3 = arr2.filter(x => x % 3 === 0).length;
+
+        wypisz("Zadanie 2", 
+            "Twoje liczby: " + inputZad2 + "\n" +
+            "Min: " + min2 + ", Max: " + max2 + "\n" +
+            "Średnia: " + srednia2 + "\n" +
+            "Ilość trójek: " + ilosc3 + "\n" +
+            "Posortowana tablica: " + arr2.join(', ') + "\n" +
+            "Mediana: " + mediana + "\n" +
+            "3 najmniejsze: " + min3.join(', ') + " | 3 największe: " + max3.join(', ') + "\n" +
+            "Kwadraty: " + kwadraty.join(', ') + "\n" +
+            "Parzyste: " + parzyste + " | Nieparzyste: " + nieparzyste + "\n" +
+            "Podzielne przez 3 (ilość): " + podzielnePrzez3
+        );
+
+        // ZADANIE 3
+        let inputZad3 = prompt("Zadanie 3\nPodaj słowo (najlepiej 10 liter, np. JavaScript):");
+        if (!inputZad3) inputZad3 = "JavaScript"; 
+        
+        let litery = inputZad3.split('').slice(0, 10);
+        let zamienionaWielkosc = litery.map(c => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase());
+        let losowaKolejnosc = [...zamienionaWielkosc].sort(() => Math.random() - 0.5);
+
+        wypisz("Zadanie 3",
+            "Oryginalna: " + litery.join(', ') + "\n" +
+            "Zamieniona wielkość: " + zamienionaWielkosc.join(', ') + "\n" +
+            "Losowa kolejność: " + losowaKolejnosc.join(', ')
+        );
+
+        // ZADANIE 4
+        let tab100 = Array.from({length: 100}, () => Math.floor(Math.random() * 100));
+        
+        let max100 = Math.max(...tab100);
+        let max100Count = tab100.filter(x => x === max100).length;
+        
+        let wszystkieNieparzyste = tab100.filter(x => x % 2 !== 0);
+        let indeksyNieparzyste = tab100.filter((_, idx) => idx % 2 !== 0);
+        let przedzial = tab100.filter(x => x >= 5 && x < 15);
+        
+        let inputAStr = prompt("Zadanie 4\nPodaj liczbę 'a', żeby znaleźć najbliższą w wygenerowanej losowo tablicy 100 elementów:");
+        let a_liczba = inputAStr ? Number(inputAStr) : 50;
+        let najblizszy = tab100.reduce((prev, curr) => Math.abs(curr - a_liczba) < Math.abs(prev - a_liczba) ? curr : prev);
+        
+        let min100 = Math.min(...tab100);
+        let minIdx = tab100.indexOf(min100);
+        let poprzednik = minIdx > 0 ? tab100[minIdx - 1] : "Brak";
+        let nastepnik = minIdx < tab100.length - 1 ? tab100[minIdx + 1] : "Brak";
+        
+        let wiekszeNiz10 = tab100.filter(x => x > 10);
+        
+        let sumyCzesciowe = [];
+        tab100.reduce((suma, obecny, i) => sumyCzesciowe[i] = suma + obecny, 0);
+        
+        let malejaco100 = [...tab100].sort((a, b) => b - a);
+        
+        let liczniki = {};
+        tab100.forEach(x => liczniki[x] = (liczniki[x] || 0) + 1);
+        let czesteElementy = Object.keys(liczniki).filter(klucz => liczniki[klucz] >= 3);
+
+        wypisz("Zadanie 4",
+            "Szukano wartości najbliższej dla: " + a_liczba + "\n\n" +
+            "Największa liczba: " + max100 + " (wystąpiła " + max100Count + " razy)\n" +
+            "Ilość liczb w przedziale <5, 15): " + przedzial.length + "\n" +
+            "Liczba najbliższa '" + a_liczba + "': " + najblizszy + "\n" +
+            "Najmniejsza liczba to " + min100 + " (jej poprzednik: " + poprzednik + ", następnik: " + nastepnik + ")\n" +
+            "Liczby występujące minimum 3 razy: " + (czesteElementy.length ? czesteElementy.join(', ') : "Brak") + "\n\n" +
+            "Pierwsze 10 sum częściowych: " + sumyCzesciowe.slice(0,10).join(', ') + "..."
+        );
+
+        // ZADANIE 5
+        let fib = [0, 1];
+        for(let i = 2; i < 100; i++) {
+            fib[i] = fib[i-1] + fib[i-2];
+        }
+
+        let potegi2 = Array.from({length: 100}, (_, i) => Math.pow(2, i + 1));
+        let coTrzy = Array.from({length: 100}, (_, i) => (i + 1) * 3);
+        
+        let mnoznik = [];
+        let cur = 2;
+        for(let i = 0; i < 100; i++) {
+            mnoznik.push(cur);
+            cur *= 2;
+        }
+
+        wypisz("Zadanie 5",
+            "Fibonacci (pierwsze 10): " + fib.slice(0, 10).join(', ') + "...\n" +
+            "Potęgi liczby 2 (pierwsze 10): " + potegi2.slice(0, 10).join(', ') + "...\n" +
+            "Ciąg 3, 6, 9... (pierwsze 10): " + coTrzy.slice(0, 10).join(', ') + "...\n" +
+            "Ciąg 2, 4, 8... (pierwsze 10): " + mnoznik.slice(0, 10).join(', ') + "..."
+        );
+
+    </script>
+</body>
+</html>
